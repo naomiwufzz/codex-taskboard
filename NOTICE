@@ -1,0 +1,15 @@
+Naomi Taskboard
+
+This source distribution is derived from the dashi-taskboard project by
+chuspeeism and contributors:
+
+    https://github.com/chuspeeism/dashi-taskboard
+
+The upstream project is distributed under the Apache License, Version 2.0.
+The original license text and applicable third-party notices remain included
+in this distribution.
+
+Naomi maintains this source distribution and has modified the product
+identity, release configuration, documentation, and selected runtime paths.
+Those modifications do not remove or replace the copyright, patent, trademark,
+or attribution notices that apply to the upstream work.

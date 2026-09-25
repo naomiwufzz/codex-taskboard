@@ -1,0 +1,77 @@
+{
+  "name": "naomi-taskboard",
+  "version": "2.0.0",
+  "private": false,
+  "type": "module",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "bin": {
+    "naomi-taskctl": "./cli/naomi-taskctl.mjs"
+  },
+  "scripts": {
+    "codex": "node scripts/codex-injector.mjs --launch --watch --open --port 9231",
+    "codex:inject": "node scripts/codex-injector.mjs --watch",
+    "codex:daemon": "node scripts/codex-injector.mjs --daemon --open",
+    "codex:refresh": "node scripts/codex-injector.mjs --refresh",
+    "app:prepare": "npm run build:web && node scripts/prepare-tauri-app.mjs",
+    "app:dev": "npm run app:prepare && tauri dev",
+    "app:build": "npm run app:prepare -- --target universal-apple-darwin && CI=true tauri build --target universal-apple-darwin --bundles app,dmg --config '{\"bundle\":{\"createUpdaterArtifacts\":false}}'",
+    "app:build:windows": "npm run app:prepare -- --target x86_64-pc-windows-msvc && tauri build --target x86_64-pc-windows-msvc --bundles nsis --no-sign --ci --config src-tauri/tauri.windows.conf.json",
+    "app:verify-packaged-naomi-taskctl": "node scripts/verify-packaged-naomi-taskctl.mjs",
+    "tauri": "tauri",
+    "dev": "node scripts/dev.mjs",
+    "dev:server": "node --watch server/index.mjs --dev",
+    "dev:web": "vite --config web/vite.config.ts",
+    "dev:cloud": "npm run build:web && wrangler dev --local",
+    "build": "vite build --config web/vite.config.ts && node scripts/codex-injector.mjs --refresh-if-running",
+    "build:web": "vite build --config web/vite.config.ts",
+    "typecheck": "tsc -p web/tsconfig.json --noEmit",
+    "start": "node server/index.mjs",
+    "naomi-taskctl": "node cli/naomi-taskctl.mjs",
+    "test": "node --test && npm run test:components",
+    "test:components": "vitest run web/src/components/MarkdownDocument.test.tsx --environment jsdom",
+    "test:cloud": "node --test test/cloud-shared-worker.test.mjs",
+    "cloud:migrate:local": "wrangler d1 migrations apply naomi-taskboard-db --local",
+    "cloud:migrate": "wrangler d1 migrations apply naomi-taskboard-db --remote",
+    "cloud:deploy:dry-run": "npm run build:web && wrangler deploy --dry-run",
+    "cloud:deploy": "npm run build:web && wrangler deploy",
+    "cloud:data": "node scripts/migrate-to-cloud.mjs",
+    "check": "npm run typecheck && npm run build && npm test"
+  },
+  "dependencies": {
+    "@lobehub/icons-static-svg": "^1.94.0",
+    "@xyflow/react": "^12.11.2",
+    "dhtmlx-gantt": "^10.0.0",
+    "dompurify": "^3.4.13",
+    "js-yaml": "4.1.1",
+    "mdast-util-definitions": "^6.0.0",
+    "mermaid": "^11.16.1",
+    "micromark-util-decode-string": "^2.0.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-markdown": "^10.1.0",
+    "remark-breaks": "^4.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "smol-toml": "^1.8.0",
+    "unified": "^11.0.5"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.11.4",
+    "@types/js-yaml": "4.0.9",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "@testing-library/react": "^16.3.2",
+    "jsdom": "^27.4.0",
+    "miniflare": "^4.20260722.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.1.5",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.120.0"
+  },
+  "overrides": {
+    "undici": "7.29.0"
+  }
+}

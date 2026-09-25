@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Naomi Taskboard"
+  short_description: "Manage projects and issues with naomi-taskctl CLI"
+  default_prompt: "Manage the referenced Naomi Taskboard issue with naomi-taskctl and keep its status synchronized."
