@@ -3,11 +3,11 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 const skillSource = await readFile(
-  new URL("../skills/manage-naomi-taskboard/SKILL.md", import.meta.url),
+  new URL("../skills/manage-codex-taskboard/SKILL.md", import.meta.url),
   "utf8",
 );
 const cliReference = await readFile(
-  new URL("../skills/manage-naomi-taskboard/references/cli.md", import.meta.url),
+  new URL("../skills/manage-codex-taskboard/references/cli.md", import.meta.url),
   "utf8",
 );
 

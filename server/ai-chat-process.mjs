@@ -248,7 +248,7 @@ export function buildCodexPrompt(thread, { message, skills, attachmentPaths }, s
   );
 
   return [
-    `[$manage-naomi-taskboard](${skillPath}) e-taskboard`,
+    `[$manage-codex-taskboard](${skillPath}) e-taskboard`,
     "",
     "<taskboard_context>",
     ...context,

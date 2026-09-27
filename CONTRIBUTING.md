@@ -1,9 +1,9 @@
-# Contributing to Naomi Taskboard
+# Contributing to Codex Taskboard
 
 Thanks for helping make AI-assisted work easier to understand and safer to
 manage.
 
-Naomi Taskboard is intentionally opinionated about a few boundaries:
+Codex Taskboard is intentionally opinionated about a few boundaries:
 
 - a conversation is not automatically a task;
 - a task is not automatically completed;
@@ -52,8 +52,8 @@ points:
 | Board, dashboard, list, and issue UI | `web/src/` |
 | Local HTTP API and SQLite behavior | `server/` |
 | Codex launcher and injection | `scripts/codex-injector.mjs` |
-| CLI commands | `cli/naomi-taskctl.mjs` |
-| Codex operating policy | `skills/manage-naomi-taskboard/` |
+| CLI commands | `cli/taskctl.mjs` |
+| Codex operating policy | `skills/manage-codex-taskboard/` |
 | Optional shared deployment | `cloud/` |
 
 ## Pull request checklist

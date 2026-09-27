@@ -411,7 +411,7 @@ export class AiChatService {
     const skillIds = input.skillIds ?? [];
     const availableSkills = new Map(
       catalog.skills
-        .filter((skill) => skill.id !== "manage-naomi-taskboard")
+        .filter((skill) => skill.id !== "manage-codex-taskboard")
         .map((skill) => [skill.id, skill]),
     );
     for (const skillId of skillIds) {
@@ -950,7 +950,7 @@ export class AiChatService {
       return { temporaryDirectory: null, attachmentPaths: [], imagePaths: [] };
     }
     const temporaryDirectory = await mkdtemp(
-      path.join(os.tmpdir(), "naomi-taskboard-ai-turn-"),
+      path.join(os.tmpdir(), "codex-taskboard-ai-turn-"),
     );
     try {
       const attachmentPaths = [];

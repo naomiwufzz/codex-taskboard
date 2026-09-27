@@ -8,7 +8,7 @@ import os from "node:os";
 import path from "node:path";
 
 const appPath = process.argv[2] ? path.resolve(process.argv[2]) : null;
-if (!appPath) throw new Error("Usage: verify-packaged-naomi-taskctl.mjs <App.app>");
+if (!appPath) throw new Error("Usage: verify-packaged-taskctl.mjs <App.app>");
 
 function waitForExit(child, timeoutMs) {
   if (child.exitCode !== null || child.signalCode !== null) return Promise.resolve();
@@ -21,7 +21,7 @@ function waitForExit(child, timeoutMs) {
   ]);
 }
 
-function runNaomiTaskctl(wrapperPath, homeDirectory, args) {
+function runCodexTaskctl(wrapperPath, homeDirectory, args) {
   const result = spawnSync(wrapperPath, args, {
     encoding: "utf8",
     env: {
@@ -31,23 +31,23 @@ function runNaomiTaskctl(wrapperPath, homeDirectory, args) {
     },
   });
   if (result.status !== 0) {
-    throw new Error(result.stderr.trim() || result.stdout.trim() || "Packaged naomi-taskctl failed");
+    throw new Error(result.stderr.trim() || result.stdout.trim() || "Packaged taskctl failed");
   }
   return JSON.parse(result.stdout);
 }
 
-const temporaryHome = await mkdtemp(path.join(os.tmpdir(), "naomi-taskboard-taskctl."));
+const temporaryHome = await mkdtemp(path.join(os.tmpdir(), "codex-taskboard-taskctl."));
 const dataDirectory = path.join(
   temporaryHome,
   "Library",
   "Application Support",
-  "Naomi Taskboard",
+  "Codex Taskboard",
 );
 await mkdir(dataDirectory, { recursive: true });
 const runtimeFile = path.join(dataDirectory, "launcher-runtime.json");
 const nodePath = path.join(appPath, "Contents", "MacOS", "node");
 const appRoot = path.join(appPath, "Contents", "Resources", "app");
-const wrapperPath = path.join(appPath, "Contents", "Resources", "bin", "naomi-taskctl");
+const wrapperPath = path.join(appPath, "Contents", "Resources", "bin", "taskctl");
 await stat(path.join(appRoot, "node_modules", "smol-toml", "package.json"));
 const reservation = createServer();
 await new Promise((resolve, reject) => {
@@ -88,7 +88,7 @@ try {
     server.stdout.setEncoding("utf8");
     server.stdout.on("data", (chunk) => {
       stdout += chunk;
-      if (stdout.includes("Naomi Taskboard listening")) {
+      if (stdout.includes("Codex Taskboard listening")) {
         clearTimeout(timeout);
         resolve();
       }
@@ -112,12 +112,12 @@ try {
     throw new Error("Packaged Taskboard runtime descriptor must use mode 0600");
   }
 
-  const projects = runNaomiTaskctl(wrapperPath, temporaryHome, ["project", "list", "--json"]);
+  const projects = runCodexTaskctl(wrapperPath, temporaryHome, ["project", "list", "--json"]);
   const projectId = projects.projects?.[0]?.id;
-  if (!projectId) throw new Error("Packaged naomi-taskctl did not list the local project");
-  const cloudStatus = runNaomiTaskctl(wrapperPath, temporaryHome, ["cloud", "status", "--json"]);
+  if (!projectId) throw new Error("Packaged taskctl did not list the local project");
+  const cloudStatus = runCodexTaskctl(wrapperPath, temporaryHome, ["cloud", "status", "--json"]);
   if (cloudStatus.mode !== "local") throw new Error("Packaged cloud status used the wrong endpoint");
-  const mapping = runNaomiTaskctl(wrapperPath, temporaryHome, [
+  const mapping = runCodexTaskctl(wrapperPath, temporaryHome, [
     "project", "map", projectId,
     "--workspace-path", appRoot,
     "--json",
@@ -125,25 +125,25 @@ try {
   if (mapping.projectId !== projectId || mapping.workspacePath !== appRoot) {
     throw new Error("Packaged project map used the wrong endpoint");
   }
-  const created = runNaomiTaskctl(wrapperPath, temporaryHome, [
+  const created = runCodexTaskctl(wrapperPath, temporaryHome, [
     "issue", "create",
     "--project", projectId,
-    "--title", "Packaged naomi-taskctl preflight",
+    "--title", "Packaged taskctl preflight",
     "--status", "todo",
     "--thread-id", "00000000-0000-4000-8000-000000000001",
     "--json",
   ]).task;
-  const fetched = runNaomiTaskctl(wrapperPath, temporaryHome, ["issue", "get", created.id, "--json"]).task;
-  if (fetched.title !== "Packaged naomi-taskctl preflight") throw new Error("Packaged issue get failed");
-  const updated = runNaomiTaskctl(wrapperPath, temporaryHome, [
+  const fetched = runCodexTaskctl(wrapperPath, temporaryHome, ["issue", "get", created.id, "--json"]).task;
+  if (fetched.title !== "Packaged taskctl preflight") throw new Error("Packaged issue get failed");
+  const updated = runCodexTaskctl(wrapperPath, temporaryHome, [
     "issue", "update", created.id,
-    "--title", "Packaged naomi-taskctl verified",
+    "--title", "Packaged taskctl verified",
     "--if-version", String(fetched.version),
     "--thread-id", "00000000-0000-4000-8000-000000000001",
     "--json",
   ]).task;
-  if (updated.title !== "Packaged naomi-taskctl verified") throw new Error("Packaged issue update failed");
-  const comment = runNaomiTaskctl(wrapperPath, temporaryHome, [
+  if (updated.title !== "Packaged taskctl verified") throw new Error("Packaged issue update failed");
+  const comment = runCodexTaskctl(wrapperPath, temporaryHome, [
     "comment", "add", created.id,
     "--body", "packaged endpoint verified",
     "--thread-id", "00000000-0000-4000-8000-000000000001",
@@ -171,4 +171,4 @@ try {
   await rm(temporaryHome, { recursive: true, force: true });
 }
 
-console.log("Verified packaged naomi-taskctl discovery and launcher-owned listener");
+console.log("Verified packaged taskctl discovery and launcher-owned listener");

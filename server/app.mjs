@@ -1652,7 +1652,7 @@ async function discoverSkills(codexExecutable, workspacePath, processEnv) {
         id: 1,
         method: "initialize",
         params: {
-          clientInfo: { name: "naomi-taskboard", version: "2.0.0" },
+          clientInfo: { name: "codex-taskboard", version: "2.0.0" },
           capabilities: { experimentalApi: true },
         },
       });
@@ -1752,7 +1752,7 @@ export function resolveServerOptions(options = {}) {
     jiraConfigPath: options.jiraConfigPath ?? path.join(dataDirectory, "jira-connection.json"),
     clientStoragePath: options.clientStoragePath ?? path.join(dataDirectory, "client-storage.json"),
     staticDirectory: options.staticDirectory ?? path.join(PROJECT_ROOT, "dist", "web"),
-    skillPath: options.skillPath ?? path.join(PROJECT_ROOT, "skills", "manage-naomi-taskboard", "SKILL.md"),
+    skillPath: options.skillPath ?? path.join(PROJECT_ROOT, "skills", "manage-codex-taskboard", "SKILL.md"),
     codexExecutable: resolveCodexExecutable({ explicit: options.codexExecutable }),
     codexStatePath: options.codexStatePath
       ?? path.join(codexHome, ".codex-global-state.json"),
@@ -2311,7 +2311,7 @@ export function createTaskboardServer(options = {}) {
           }
           return sendJson(response, 200, {
             status: "ok",
-            product: "naomi-taskboard",
+            product: "codex-taskboard",
             version: resolved.version,
             proof: createHmac("sha256", resolved.instanceSecret)
               .update(challenge)

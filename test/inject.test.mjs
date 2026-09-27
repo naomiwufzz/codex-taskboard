@@ -221,7 +221,7 @@ test("complete App automation payloads cross the injected forwarder into the cur
     projectName: "Local",
     workspacePath: "/tmp/local-project",
     remoteProjects: [],
-    skillPath: "/tmp/manage-naomi-taskboard/SKILL.md",
+    skillPath: "/tmp/manage-codex-taskboard/SKILL.md",
     automationId: "automation-1",
     enabledByUser: true,
     quotaAware: true,
@@ -374,7 +374,7 @@ test("the standalone web page reports that new Codex conversations require the e
   );
   assert.match(
     webApp,
-    /"Open in conversation is available only in the embedded Naomi Taskboard\. Open Taskboard from the Codex sidebar and try again\.",/,
+    /"Open in conversation is available only in the embedded Codex Taskboard\. Open Taskboard from the Codex sidebar and try again\.",/,
   );
   assert.doesNotMatch(webApp, /codex:\/\/new/);
 });

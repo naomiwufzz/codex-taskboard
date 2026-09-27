@@ -108,7 +108,7 @@ test("turn input contains only serialized composer content, real skill ids and o
     dangerFullAccessConfirmed: true,
   });
   assert.equal(JSON.stringify(buildTurnInput("hello", [], false)).includes("workspacePath"), false);
-  assert.equal(JSON.stringify(buildTurnInput("hello", [], false)).includes("manage-naomi-taskboard"), false);
+  assert.equal(JSON.stringify(buildTurnInput("hello", [], false)).includes("manage-codex-taskboard"), false);
 });
 
 test("running threads expose stop, danger-full-access requires confirmation, and SSE is a refresh hint", () => {

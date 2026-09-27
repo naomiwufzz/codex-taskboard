@@ -113,7 +113,7 @@ struct UpdateDialogTargetIvars {
 #[cfg(target_os = "macos")]
 define_class!(
     #[unsafe(super = NSObject)]
-    #[name = "NaomiTaskboardUpdateDialogTarget"]
+    #[name = "CodexTaskboardUpdateDialogTarget"]
     #[thread_kind = MainThreadOnly]
     #[ivars = UpdateDialogTargetIvars]
     struct UpdateDialogTarget;
@@ -188,7 +188,7 @@ struct UpdateDialog {
 #[cfg(target_os = "macos")]
 impl UpdateDialog {
     fn prompt(version: &str) -> Option<Self> {
-        let message = format!("发现 Naomi Taskboard {version}。是否现在下载、安装并重启？");
+        let message = format!("发现 Codex Taskboard {version}。是否现在下载、安装并重启？");
         let (response, result) = std::sync::mpsc::channel();
         let dialog = run_on_main(move |mtm| {
             let alert = NSAlert::new(mtm);
@@ -200,7 +200,7 @@ impl UpdateDialog {
             progress_indicator.setFrameSize(NSSize::new(280.0, 20.0));
             progress_indicator.sizeToFit();
             progress_indicator.setDisplayedWhenStopped(true);
-            alert.setMessageText(&NSString::from_str("Naomi Taskboard 更新"));
+            alert.setMessageText(&NSString::from_str("Codex Taskboard 更新"));
             alert.setInformativeText(&NSString::from_str(&message));
             let install_button = alert.addButtonWithTitle(&NSString::from_str("立即更新"));
             let defer_button = alert.addButtonWithTitle(&NSString::from_str("稍后"));
@@ -359,7 +359,7 @@ impl LauncherState {
             _instance_lock: instance_lock,
             pid_record_path: data_directory.join("launcher-child.json"),
             data_directory,
-            log_path: log_directory.join("naomi-taskboard-launcher.log"),
+            log_path: log_directory.join("codex-taskboard-launcher.log"),
         }
     }
 }
@@ -782,7 +782,7 @@ fn watch_launcher_output<R: std::io::Read + Send + 'static>(
                         snapshot.message = "正在等待 Codex 窗口…".into();
                     }
                 });
-            } else if !is_stderr && line.contains("Naomi Taskboard listening") {
+            } else if !is_stderr && line.contains("Codex Taskboard listening") {
                 update_snapshot(&app, &state, |snapshot| {
                     if state.generation.load(Ordering::SeqCst) == generation
                         && snapshot.child_pid == Some(pid)
@@ -1070,7 +1070,7 @@ fn start_launcher_locked(
             });
             show_error_dialog(
                 &event_app,
-                "Naomi Taskboard 恢复失败",
+                "Codex Taskboard 恢复失败",
                 &format!("任务面板进程无法恢复：{error}\n\n请重新打开 App。"),
             );
         }
@@ -1468,7 +1468,7 @@ async fn offer_update(
             if show_current_version {
                 show_error_dialog(
                     app,
-                    "Naomi Taskboard 更新检查失败",
+                    "Codex Taskboard 更新检查失败",
                     &format!("无法检查更新。请稍后重试。\n\n{error}"),
                 );
             }
@@ -1480,7 +1480,7 @@ async fn offer_update(
         if show_current_version {
             app.dialog()
                 .message("当前已是最新版本。")
-                .title("Naomi Taskboard 更新")
+                .title("Codex Taskboard 更新")
                 .buttons(MessageDialogButtons::Ok)
                 .blocking_show();
         }
@@ -1513,7 +1513,7 @@ async fn offer_update(
             update_dialog.close();
             show_error_dialog(
                 app,
-                "Naomi Taskboard 更新失败",
+                "Codex Taskboard 更新失败",
                 &format!(
                     "更新未完成。{service_message}\n\n请稍后重试。详情见启动日志。\n\n{error}"
                 ),
@@ -1539,26 +1539,26 @@ fn main() {
             let bundled_skill = app
                 .path()
                 .resource_dir()?
-                .join("app/skills/manage-naomi-taskboard");
-            let global_skill = home_directory.join(".agents/skills/manage-naomi-taskboard");
+                .join("app/skills/manage-codex-taskboard");
+            let global_skill = home_directory.join(".agents/skills/manage-codex-taskboard");
             if global_skill.exists() {
                 fs::remove_dir_all(&global_skill)?;
             }
             copy_directory(&bundled_skill, &global_skill)?;
             #[cfg(target_os = "macos")]
-            let data_directory = home_directory.join("Library/Application Support/Naomi Taskboard");
+            let data_directory = home_directory.join("Library/Application Support/Codex Taskboard");
             #[cfg(target_os = "macos")]
-            let log_directory = home_directory.join("Library/Logs/Naomi Taskboard");
+            let log_directory = home_directory.join("Library/Logs/Codex Taskboard");
             #[cfg(target_os = "windows")]
             let data_directory = std::env::var_os("APPDATA")
                 .map(PathBuf::from)
                 .ok_or_else(|| std::io::Error::other("APPDATA is unavailable"))?
-                .join("Naomi Taskboard");
+                .join("Codex Taskboard");
             #[cfg(target_os = "windows")]
             let log_directory = std::env::var_os("LOCALAPPDATA")
                 .map(PathBuf::from)
                 .ok_or_else(|| std::io::Error::other("LOCALAPPDATA is unavailable"))?
-                .join("Naomi Taskboard/Logs");
+                .join("Codex Taskboard/Logs");
             fs::create_dir_all(&data_directory)?;
             fs::create_dir_all(&log_directory)?;
             let Some(instance_lock) = acquire_instance_lock(&data_directory.join("launcher.lock"))?
@@ -1630,7 +1630,7 @@ fn main() {
             TrayIconBuilder::new()
                 .icon(tauri::include_image!("icons/tray-codex.png"))
                 .icon_as_template(true)
-                .tooltip("Naomi Taskboard")
+                .tooltip("Codex Taskboard")
                 .menu(&tray_menu)
                 .on_menu_event(move |app, event| match event.id().as_ref() {
                     "check-update" => {
@@ -1656,7 +1656,7 @@ fn main() {
                                 append_log(&state, &format!("Launcher menu open failed: {error}"));
                                 show_error_dialog(
                                     &app,
-                                    "Naomi Taskboard 打开失败",
+                                    "Codex Taskboard 打开失败",
                                     &format!("{error}\n\n请确认 Codex 正在运行。"),
                                 );
                             }
@@ -1676,7 +1676,7 @@ fn main() {
                                 );
                                 show_error_dialog(
                                     &app,
-                                    "Naomi Taskboard 启动失败",
+                                    "Codex Taskboard 启动失败",
                                     &format!("{error}\n\n请确认官方 Codex/ChatGPT App 已安装。"),
                                 );
                             }
@@ -1712,7 +1712,7 @@ fn main() {
                             }
                         };
                         if let Some(error) = operation_error.or(sync_error) {
-                            show_error_dialog(app, "Naomi Taskboard 自启动设置失败", &error);
+                            show_error_dialog(app, "Codex Taskboard 自启动设置失败", &error);
                         }
                     }
                     "quit" => {
@@ -1758,7 +1758,7 @@ fn main() {
                     });
                     show_error_dialog(
                         &app_handle,
-                        "Naomi Taskboard 启动失败",
+                        "Codex Taskboard 启动失败",
                         &format!(
                             "{error}\n\n请确认官方 Codex/ChatGPT App 已安装。详情见启动日志。"
                         ),
@@ -1768,7 +1768,7 @@ fn main() {
             Ok(())
         })
         .build(tauri::generate_context!())
-        .expect("failed to build Naomi Taskboard");
+        .expect("failed to build Codex Taskboard");
 
     app.run(|app_handle, event| match event {
         #[cfg(target_os = "macos")]
@@ -1781,7 +1781,7 @@ fn main() {
                 append_log(&state, &format!("Launcher panel reopen failed: {error}"));
                 show_error_dialog(
                     app_handle,
-                    "Naomi Taskboard 打开失败",
+                    "Codex Taskboard 打开失败",
                     &format!("{error}\n\n请确认官方 Codex/ChatGPT App 已安装。"),
                 );
             }

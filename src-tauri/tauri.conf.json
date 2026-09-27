@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Naomi Taskboard",
+  "productName": "Codex Taskboard",
   "version": "2.0.0",
-  "identifier": "com.naomi.taskboard",
+  "identifier": "com.codex.taskboard",
   "app": {
     "windows": []
   },

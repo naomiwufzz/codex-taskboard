@@ -414,7 +414,7 @@ function listSkills(codexExecutable, workspacePath, processEnv) {
         id: 1,
         method: "initialize",
         params: {
-          clientInfo: { name: "naomi-taskboard", version: "2.0.0" },
+          clientInfo: { name: "codex-taskboard", version: "2.0.0" },
           capabilities: { experimentalApi: true },
         },
       });

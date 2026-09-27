@@ -44,7 +44,7 @@ if (args[0] === "debug") {
     dataDirectory: directory,
     codexExecutable,
     codexStatePath,
-    skillPath: "/fixture/manage-naomi-taskboard/SKILL.md",
+    skillPath: "/fixture/manage-codex-taskboard/SKILL.md",
   });
   const address = await app.listen({ host, port: 0 });
   return {

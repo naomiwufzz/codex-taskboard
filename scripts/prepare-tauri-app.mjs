@@ -43,10 +43,10 @@ const extractionDirectory = path.join(runtimeCacheDirectory, "extracted");
 const target = parseTarget(process.argv.slice(2));
 
 if (target === windowsTarget && process.platform !== "win32") {
-  throw new Error("Naomi Taskboard for Windows must be prepared on Windows");
+  throw new Error("Codex Taskboard for Windows must be prepared on Windows");
 }
 if (target !== windowsTarget && process.platform !== "darwin") {
-  throw new Error("Naomi Taskboard for macOS must be prepared on macOS");
+  throw new Error("Codex Taskboard for macOS must be prepared on macOS");
 }
 
 function parseTarget(argv) {
@@ -204,8 +204,8 @@ async function copyApplicationResources() {
       recursive: true,
     }),
     cp(
-      path.join(projectRoot, "skills", "manage-naomi-taskboard"),
-      path.join(appResources, "skills", "manage-naomi-taskboard"),
+      path.join(projectRoot, "skills", "manage-codex-taskboard"),
+      path.join(appResources, "skills", "manage-codex-taskboard"),
       { recursive: true },
     ),
   ]);
@@ -230,23 +230,23 @@ async function copyApplicationResources() {
   );
   await mkdir(path.join(appResources, "cli"), { recursive: true });
   await copyFile(
-    path.join(projectRoot, "cli", "naomi-taskctl.mjs"),
-    path.join(appResources, "cli", "naomi-taskctl.mjs"),
+    path.join(projectRoot, "cli", "taskctl.mjs"),
+    path.join(appResources, "cli", "taskctl.mjs"),
   );
 
   if (target === windowsTarget) {
     const taskctlWrapper = [
       "@echo off",
       "setlocal",
-      "set \"CODEX_TASKBOARD_DATA_DIR=%APPDATA%\\Naomi Taskboard\"",
+      "set \"CODEX_TASKBOARD_DATA_DIR=%APPDATA%\\Codex Taskboard\"",
       "set \"CODEX_TASKBOARD_RUNTIME_FILE=%CODEX_TASKBOARD_DATA_DIR%\\launcher-runtime.json\"",
-      "\"%~dp0..\\node.exe\" \"%~dp0..\\app\\cli\\naomi-taskctl.mjs\" %*",
+      "\"%~dp0..\\node.exe\" \"%~dp0..\\app\\cli\\taskctl.mjs\" %*",
       "exit /b %ERRORLEVEL%",
       "",
     ].join("\r\n");
-    const naomiTaskctlPath = path.join(resourcesDirectory, "bin", "naomi-taskctl.cmd");
-    await mkdir(path.dirname(naomiTaskctlPath), { recursive: true });
-    await writeFile(naomiTaskctlPath, taskctlWrapper);
+    const taskctlPath = path.join(resourcesDirectory, "bin", "taskctl.cmd");
+    await mkdir(path.dirname(taskctlPath), { recursive: true });
+    await writeFile(taskctlPath, taskctlWrapper);
     return;
   }
 
@@ -255,14 +255,14 @@ set -u
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONTENTS_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
-export CODEX_TASKBOARD_DATA_DIR="$HOME/Library/Application Support/Naomi Taskboard"
+export CODEX_TASKBOARD_DATA_DIR="$HOME/Library/Application Support/Codex Taskboard"
 export CODEX_TASKBOARD_RUNTIME_FILE="$CODEX_TASKBOARD_DATA_DIR/launcher-runtime.json"
-exec "$CONTENTS_DIR/MacOS/node" "$CONTENTS_DIR/Resources/app/cli/naomi-taskctl.mjs" "$@"
+exec "$CONTENTS_DIR/MacOS/node" "$CONTENTS_DIR/Resources/app/cli/taskctl.mjs" "$@"
 `;
-  const naomiTaskctlPath = path.join(resourcesDirectory, "bin", "naomi-taskctl");
-  await mkdir(path.dirname(naomiTaskctlPath), { recursive: true });
-  await writeFile(naomiTaskctlPath, taskctlWrapper);
-  await chmod(naomiTaskctlPath, 0o755);
+  const taskctlPath = path.join(resourcesDirectory, "bin", "taskctl");
+  await mkdir(path.dirname(taskctlPath), { recursive: true });
+  await writeFile(taskctlPath, taskctlWrapper);
+  await chmod(taskctlPath, 0o755);
 }
 
 await mkdir(runtimeCacheDirectory, { recursive: true });

@@ -178,7 +178,7 @@ async function isTaskboardReachable() {
       .update(challenge)
       .digest("hex");
     return body?.status === "ok"
-      && body.product === "naomi-taskboard"
+      && body.product === "codex-taskboard"
       && body.version === taskboardVersion
       && body.proof === proof;
   } catch {
@@ -2364,7 +2364,7 @@ async function main() {
             codexProcess = null;
             idleAfterNormalExit = true;
             console.error(
-              "Waiting for Codex after normal exit; open Naomi Taskboard again to restart it.",
+              "Waiting for Codex after normal exit; open Codex Taskboard again to restart it.",
             );
             continue;
           }
@@ -2393,7 +2393,7 @@ async function main() {
             if (exitCode === 0) {
               idleAfterNormalExit = true;
               console.error(
-                "Waiting for Codex after normal exit; open Naomi Taskboard again to restart it.",
+                "Waiting for Codex after normal exit; open Codex Taskboard again to restart it.",
               );
               continue;
             }
@@ -2409,7 +2409,7 @@ async function main() {
           managedCodex = null;
           idleAfterNormalExit = true;
           console.error(
-            "Waiting for Codex after exit; open Naomi Taskboard again to restart it.",
+            "Waiting for Codex after exit; open Codex Taskboard again to restart it.",
           );
           continue;
         }

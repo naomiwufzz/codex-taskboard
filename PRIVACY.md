@@ -1,28 +1,28 @@
 # Privacy
 
-Naomi Taskboard is a local-first application. Its desktop launcher runs the
+Codex Taskboard is a local-first application. Its desktop launcher runs the
 Taskboard service on the local computer and does not send Taskboard content or
 usage telemetry to the project maintainers.
 
 ## Data stored on the computer
 
-On Windows, Naomi Taskboard stores its database, attachments, launcher runtime
+On Windows, Codex Taskboard stores its database, attachments, launcher runtime
 file, and independent Codex browser profile under:
 
-`%APPDATA%\Naomi Taskboard`
+`%APPDATA%\Codex Taskboard`
 
 Launcher logs are stored under:
 
-`%LOCALAPPDATA%\Naomi Taskboard\Logs`
+`%LOCALAPPDATA%\Codex Taskboard\Logs`
 
-The launcher also installs the bundled `manage-naomi-taskboard` Skill in the current
-user's `.agents\skills\manage-naomi-taskboard` directory.
+The launcher also installs the bundled `manage-codex-taskboard` Skill in the current
+user's `.agents\skills\manage-codex-taskboard` directory.
 
 ## Network activity
 
 - The desktop app uses a loopback-only HTTP service to connect the embedded
-  panel, the launcher, and `naomi-taskctl` on the same computer.
-- Automatic updates are disabled in the 2.0.0 source release. No Naomi
+  panel, the launcher, and `taskctl` on the same computer.
+- Automatic updates are disabled in the 2.0.0 source release. No Codex
   release endpoint or updater key is configured.
 - The official Codex application and Codex CLI use OpenAI services under the
   user's existing OpenAI account and OpenAI's terms.
@@ -30,7 +30,7 @@ user's `.agents\skills\manage-naomi-taskboard` directory.
   sent to the deployment selected by that user.
 - Some workflow catalog icons can be loaded from their published websites.
 
-Naomi Taskboard does not include advertising or a project-maintainer analytics
+Codex Taskboard does not include advertising or a project-maintainer analytics
 service.
 
 ## Removing data

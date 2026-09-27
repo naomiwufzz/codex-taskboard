@@ -19,7 +19,7 @@ const currentAutomationRequest = {
   codexHostId: "local",
   projectName: "Local",
   workspacePath: "/tmp/project",
-  skillPath: "/tmp/manage-naomi-taskboard/SKILL.md",
+  skillPath: "/tmp/manage-codex-taskboard/SKILL.md",
   intervalMinutes: 10,
   model: "gpt-5.6-sol",
   reasoningEffort: "ultra",

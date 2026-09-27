@@ -27,7 +27,7 @@ const baseRequest = {
   codexHostId: "local",
   projectName: "PPT Skill",
   workspacePath: "/Users/example/Documents/ppt-skill",
-  skillPath: "/Users/example/taskboard/skills/manage-naomi-taskboard/SKILL.md",
+  skillPath: "/Users/example/taskboard/skills/manage-codex-taskboard/SKILL.md",
   enabledByUser: true,
   quotaAware: false,
   intervalMinutes: 5,
@@ -187,12 +187,12 @@ test("the automation host request accepts only whitelisted project automation op
   assert.deepEqual(parseTaskboardAutomationHostRequest(remoteRequest), remoteRequest);
   const windowsRemoteRequest = {
     ...remoteRequest,
-    workspacePath: String.raw`C:\Users\admin\Documents\naomi-taskboard`,
+    workspacePath: String.raw`C:\Users\admin\Documents\codex-taskboard`,
     remoteProjects: [{
       codexProjectId: "remote-project-123",
       codexProjectKind: "remote",
       codexHostId: "remote-ssh-discovered:merlin-agent",
-    workspacePath: String.raw`C:\Users\admin\Documents\naomi-taskboard`,
+    workspacePath: String.raw`C:\Users\admin\Documents\codex-taskboard`,
     }],
   };
   assert.deepEqual(
@@ -218,9 +218,9 @@ test("the stable name and generated prompt are project-scoped and encode the cla
   const prompt = buildTaskboardAutomationPrompt(baseRequest);
   assert.match(
     prompt,
-    /\[\$manage-naomi-taskboard\]\(\/Users\/example\/taskboard\/skills\/manage-naomi-taskboard\/SKILL\.md\)/,
+    /\[\$manage-codex-taskboard\]\(\/Users\/example\/taskboard\/skills\/manage-codex-taskboard\/SKILL\.md\)/,
   );
-  assert.match(prompt, /\[\$manage-naomi-taskboard\]\([^)]*\) e-taskboard /);
+  assert.match(prompt, /\[\$manage-codex-taskboard\]\([^)]*\) e-taskboard /);
   assert.match(prompt, /PPT Skill/);
   assert.match(prompt, /每 5 分钟检查/);
   assert.match(prompt, /ppt-skill/);
@@ -274,10 +274,10 @@ test("the remote automation prompt keeps taskctl local and delegates work to the
 
 test("the generated automation command uses an argv runtime file instead of an env assignment", () => {
   const previous = process.env.CODEX_TASKBOARD_RUNTIME_FILE;
-  process.env.CODEX_TASKBOARD_RUNTIME_FILE = "/Users/example/Library/Application Support/Naomi Taskboard/launcher-runtime.json";
+  process.env.CODEX_TASKBOARD_RUNTIME_FILE = "/Users/example/Library/Application Support/Codex Taskboard/launcher-runtime.json";
   try {
     const prompt = buildTaskboardAutomationPrompt(baseRequest);
-    const cliPath = path.resolve(path.dirname(baseRequest.skillPath), "../..", "cli/naomi-taskctl.mjs");
+    const cliPath = path.resolve(path.dirname(baseRequest.skillPath), "../..", "cli/taskctl.mjs");
     assert.ok(prompt.includes(
       `'${process.execPath}' '${cliPath}' --runtime-file '${process.env.CODEX_TASKBOARD_RUNTIME_FILE}'`,
     ));

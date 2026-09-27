@@ -1,6 +1,6 @@
 [简体中文](README.zh-CN.md)
 
-# Naomi Taskboard
+# Codex Taskboard
 
 > **Turn conversations into momentum.**
 >
@@ -94,8 +94,8 @@ on demand instead of producing a dense graph of crossed lines.
 
 ### A CLI and a Codex Skill
 
-The same Taskboard API is available through `naomi-taskctl`. The bundled
-`manage-naomi-taskboard` Skill gives Codex a disciplined workflow for claiming,
+The same Taskboard API is available through `taskctl`. The bundled
+`manage-codex-taskboard` Skill gives Codex a disciplined workflow for claiming,
 updating, verifying, and reviewing issues without silently marking work done.
 
 ### Optional collaboration
@@ -153,8 +153,8 @@ Taskboard issues with a predictable safety boundary.
 Link the Skill into your local Codex skills directory:
 
 ```bash
-ln -s /absolute/path/to/naomi-taskboard/skills/manage-naomi-taskboard \
-  ~/.codex/skills/manage-naomi-taskboard
+ln -s /absolute/path/to/codex-taskboard/skills/manage-codex-taskboard \
+  ~/.codex/skills/manage-codex-taskboard
 ```
 
 Start a new Codex task after installing it. The Skill encourages this loop:
@@ -166,12 +166,12 @@ inspect -> claim -> work -> verify -> in review -> user accepts -> done
 It does not treat assignment alone as permission to start backlog work, and it
 does not mark an issue as done without an explicit acceptance signal.
 
-## Use `naomi-taskctl`
+## Use `taskctl`
 
 Create a project:
 
 ```bash
-npm run naomi-taskctl -- project create \
+npm run taskctl -- project create \
   --id my-project \
   --name "My project" \
   --workspace-path /absolute/path/to/repository
@@ -180,7 +180,7 @@ npm run naomi-taskctl -- project create \
 Create an issue:
 
 ```bash
-npm run naomi-taskctl -- issue create \
+npm run taskctl -- issue create \
   --project my-project \
   --title "Implement the next slice" \
   --status todo \
@@ -189,7 +189,7 @@ npm run naomi-taskctl -- issue create \
 ```
 
 If you install the CLI with `npm link`, it can be used directly from your
-shell as `naomi-taskctl`. Set `CODEX_TASKBOARD_URL` when the CLI should target another local or
+shell as `taskctl`. Set `CODEX_TASKBOARD_URL` when the CLI should target another local or
 trusted network service.
 
 ## Connect it to Codex
@@ -307,7 +307,7 @@ instance.
 | `CODEX_TASKBOARD_HOST` | Bind address. Use `127.0.0.1` for local-only access. |
 | `CODEX_TASKBOARD_PORT` | Port used by the local service. |
 | `CODEX_TASKBOARD_DATA_DIR` | Location for local board data. |
-| `CODEX_TASKBOARD_URL` | API origin used by `naomi-taskctl`. |
+| `CODEX_TASKBOARD_URL` | API origin used by `taskctl`. |
 
 Local-only example:
 
@@ -363,8 +363,8 @@ the graph should be empty rather than confidently wrong.
 | --- | --- |
 | `web/` | Board, dashboard, list, session shelf, and outcome views |
 | `server/` | Local HTTP API and integrations |
-| `cli/` | `naomi-taskctl` command-line interface |
-| `skills/manage-naomi-taskboard/` | Codex operating instructions |
+| `cli/` | `taskctl` command-line interface |
+| `skills/manage-codex-taskboard/` | Codex operating instructions |
 | `scripts/` | Launchers, injectors, packaging, and verification |
 | `cloud/` | Optional shared deployment |
 | `docs/` | Operational and deployment documentation |

@@ -18,7 +18,7 @@ test("the macOS launcher uses one instance, serialized lifecycle changes, and a 
 });
 
 test("the 2.0.0 source release has no active desktop release or updater channel", () => {
-  assert.equal(tauriConfig.productName, "Naomi Taskboard");
+  assert.equal(tauriConfig.productName, "Codex Taskboard");
   assert.equal(tauriConfig.version, "2.0.0");
   assert.equal(tauriConfig.bundle.createUpdaterArtifacts, false);
   assert.doesNotMatch(JSON.stringify(tauriConfig), /github\.com|pubkey|latest\.json/i);

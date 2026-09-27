@@ -1,7 +1,7 @@
 [package]
-name = "naomi-taskboard-launcher"
+name = "codex-taskboard-launcher"
 version = "2.0.0"
-description = "Naomi Taskboard desktop launcher"
+description = "Codex Taskboard desktop launcher"
 edition = "2021"
 rust-version = "1.88"
 

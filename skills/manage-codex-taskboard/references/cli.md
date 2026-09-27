@@ -1,6 +1,6 @@
-# naomi-taskctl CLI
+# taskctl CLI
 
-`naomi-taskctl` emits JSON. Add `--json` when making the output contract explicit.
+`taskctl` emits JSON. Add `--json` when making the output contract explicit.
 
 ## Terminology: local companion
 
@@ -16,43 +16,43 @@ Env and files that refer to this service: `CODEX_TASKBOARD_COMPANION_URL`, `CODE
 ## Context and projects
 
 ```bash
-naomi-taskctl context current [--cwd PATH] [--json]
-naomi-taskctl project list [--json]
-naomi-taskctl project create --name NAME [--id ID] [--workspace-path PATH] [--json]
-naomi-taskctl project map PROJECT_ID --workspace-path PATH [--json]
+taskctl context current [--cwd PATH] [--json]
+taskctl project list [--json]
+taskctl project create --name NAME [--id ID] [--workspace-path PATH] [--json]
+taskctl project map PROJECT_ID --workspace-path PATH [--json]
 ```
 
 Use `--workspace-path` to associate a project with a local repository. `context current` chooses the most specific project whose workspace contains the current directory, then falls back to the `local` project.
 
 Set `CODEX_TASKBOARD_URL` to override the default local API origin, `http://127.0.0.1:47823`.
 
-For a shared cloud board, keep `naomi-taskctl` pointed at the **loopback companion** (local loopback service; see Terminology above) and configure the upstream HTTPS origin through it:
+For a shared cloud board, keep `taskctl` pointed at the **loopback companion** (local loopback service; see Terminology above) and configure the upstream HTTPS origin through it:
 
 ```bash
-naomi-taskctl cloud login --url HTTPS_ORIGIN --actor-name NAME [--json]
-naomi-taskctl cloud status [--json]
-naomi-taskctl project list [--json]
-naomi-taskctl project map PROJECT_ID --workspace-path /absolute/local/path [--json]
-naomi-taskctl cloud logout [--json]
+taskctl cloud login --url HTTPS_ORIGIN --actor-name NAME [--json]
+taskctl cloud status [--json]
+taskctl project list [--json]
+taskctl project map PROJECT_ID --workspace-path /absolute/local/path [--json]
+taskctl cloud logout [--json]
 ```
 
 `cloud login` reads the shared password from a private `Shared key:` prompt. The actor name is the display attribution sent through Basic Authentication. The local companion stores its configuration with mode `0600`; project mappings stay on the current device and can differ between collaborators. In cloud mode, failed upstream writes fail rather than falling back to or double-writing the local SQLite database.
 
-Every issue or comment write must be attributed to a Codex conversation. In Codex, `naomi-taskctl` reads the current conversation from `CODEX_THREAD_ID`. Outside Codex, pass `--thread-id ID` explicitly. An explicit option takes precedence over the environment. Read commands do not require a conversation id.
+Every issue or comment write must be attributed to a Codex conversation. In Codex, `taskctl` reads the current conversation from `CODEX_THREAD_ID`. Outside Codex, pass `--thread-id ID` explicitly. An explicit option takes precedence over the environment. Read commands do not require a conversation id.
 
 Every successful command writes one JSON object with `schemaVersion` to stdout. The current schema version is `2`. Errors write one JSON object to stderr. Exit codes are `0` for success, `2` for invalid input, `3` when the service is unavailable, `4` for API or response errors, and `5` for conflicts.
 
 ## Read issues
 
 ```bash
-naomi-taskctl issue list [--project PROJECT_ID] [--status STATUS] [--archived true|false|all] [--json]
-naomi-taskctl issue get ID [--json]
+taskctl issue list [--project PROJECT_ID] [--status STATUS] [--archived true|false|all] [--json]
+taskctl issue get ID [--json]
 ```
 
 ## Create issues
 
 ```bash
-naomi-taskctl issue create \
+taskctl issue create \
   --project PROJECT_ID \
   --title TITLE \
   [--description TEXT | --description-file FILE] \
@@ -71,14 +71,14 @@ naomi-taskctl issue create \
 
 Statuses are `backlog`, `todo`, `in_progress`, `in_review`, `blocked`, `done`, and `canceled`. Priorities are `none`, `urgent`, `high`, `medium`, and `low`.
 
-Issues created through `naomi-taskctl` are assigned to Codex Agent by default. Other CLI writes preserve the existing assignee.
+Issues created through `taskctl` are assigned to Codex Agent by default. Other CLI writes preserve the existing assignee.
 
 ## Update issues
 
 Read the issue immediately before a write and pass its `version` with `--if-version`.
 
 ```bash
-naomi-taskctl issue update ID \
+taskctl issue update ID \
   [--project PROJECT_ID] \
   [--title TITLE] \
   [--description TEXT | --description-file FILE] \
@@ -95,9 +95,9 @@ naomi-taskctl issue update ID \
   [--if-version N] \
   [--json]
 
-naomi-taskctl issue move ID --status STATUS [--thread-id ID] [--if-version N] [--json]
-naomi-taskctl issue archive ID [--thread-id ID] [--if-version N] [--json]
-naomi-taskctl issue restore ID [--thread-id ID] [--if-version N] [--json]
+taskctl issue move ID --status STATUS [--thread-id ID] [--if-version N] [--json]
+taskctl issue archive ID [--thread-id ID] [--if-version N] [--json]
+taskctl issue restore ID [--thread-id ID] [--if-version N] [--json]
 ```
 
 Use `issue move` to set `in_progress` before implementation and `in_review` after implementation and self-verification. Codex must not move work directly from `in_progress` to `done`; use `done` only after the user explicitly confirms acceptance or explicitly asks to mark the issue complete. Use `blocked` when work cannot continue and `canceled` when it will not continue. On a version conflict, fetch the issue again and reconcile before retrying.
@@ -111,21 +111,21 @@ Changing only `--project` preserves the issue's existing linked conversation.
 Read the anchor issue immediately before adding or removing a relation and use its current version. Relation writes require Codex conversation attribution like every other issue write.
 
 ```bash
-naomi-taskctl issue relation add ISSUE_ID \
+taskctl issue relation add ISSUE_ID \
   --type parent \
   --issue PARENT_ISSUE_ID \
   [--thread-id ID] \
   [--if-version N] \
   [--json]
 
-naomi-taskctl issue relation add ISSUE_ID \
+taskctl issue relation add ISSUE_ID \
   --type blocks|blocked_by|related \
   --issue RELATED_ISSUE_ID \
   [--thread-id ID] \
   [--if-version N] \
   [--json]
 
-naomi-taskctl issue relation remove ISSUE_ID \
+taskctl issue relation remove ISSUE_ID \
   --type parent|blocks|blocked_by|related \
   --issue RELATED_ISSUE_ID \
   [--thread-id ID] \
@@ -142,10 +142,10 @@ For `blocks`, the anchor issue blocks the related issue. For `blocked_by`, the r
 Use the issue id to read or append comments. Comment updates and deletes require the latest comment `version` returned by `comment list`.
 
 ```bash
-naomi-taskctl comment list ISSUE_ID [--json]
-naomi-taskctl comment add ISSUE_ID --body TEXT [--thread-id ID] [--json]
-naomi-taskctl comment update COMMENT_ID --body TEXT --if-version N [--thread-id ID] [--json]
-naomi-taskctl comment delete COMMENT_ID --if-version N [--thread-id ID] [--json]
+taskctl comment list ISSUE_ID [--json]
+taskctl comment add ISSUE_ID --body TEXT [--thread-id ID] [--json]
+taskctl comment update COMMENT_ID --body TEXT --if-version N [--thread-id ID] [--json]
+taskctl comment delete COMMENT_ID --if-version N [--thread-id ID] [--json]
 ```
 
 Each comment JSON object independently records the most recent conversation that created or changed that comment as `threadId`. Comment operations never change the parent issue's `threadId`.
@@ -161,8 +161,8 @@ Issue descriptions and comments may contain inline images at exact positions in 
 Upload a local file to a task or a comment. Provide exactly one of `--task` or `--comment`:
 
 ```bash
-naomi-taskctl attachment upload --task TASK_ID --file PATH [--content-type TYPE] [--kind inline|attachment] [--json]
-naomi-taskctl attachment upload --comment COMMENT_ID --file PATH [--content-type TYPE] [--kind inline|attachment] [--json]
+taskctl attachment upload --task TASK_ID --file PATH [--content-type TYPE] [--kind inline|attachment] [--json]
+taskctl attachment upload --comment COMMENT_ID --file PATH [--content-type TYPE] [--kind inline|attachment] [--json]
 ```
 
 The command sends the file bytes to:
@@ -175,7 +175,7 @@ with the same headers as the web UI (`Content-Type`, `X-Taskboard-Filename`, `X-
 Download an attachment to an explicit local path:
 
 ```bash
-naomi-taskctl attachment download ATTACHMENT_ID --output PATH [--json]
+taskctl attachment download ATTACHMENT_ID --output PATH [--json]
 ```
 
 The command writes the response body as binary data and returns the absolute output path, content type, and size in its JSON result. Choose the output filename yourself; `taskctl` does not infer or append an extension.

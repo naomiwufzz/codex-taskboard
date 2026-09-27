@@ -20,7 +20,7 @@ afterEach(async () => {
 });
 
 async function startServer(configure, listenOptions = {}) {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "naomi-taskboard-test-"));
+  const directory = await mkdtemp(path.join(os.tmpdir(), "codex-taskboard-test-"));
   const options = configure ? await configure(directory) : {};
   const app = createTaskboardServer({ dataDirectory: directory, ...options });
   const address = await app.listen({ port: 0, ...listenOptions });
@@ -66,7 +66,7 @@ async function requestWithHost(baseUrl, host) {
 test("health and the default local project are available", async () => {
   let skillPath;
   const baseUrl = await startServer(async (directory) => {
-    skillPath = path.join(directory, "skills", "manage-naomi-taskboard", "SKILL.md");
+    skillPath = path.join(directory, "skills", "manage-codex-taskboard", "SKILL.md");
     return { skillPath };
   });
 
@@ -104,7 +104,7 @@ test("launcher mode proves service identity and hides every route behind its ins
     headers: { "x-codex-taskboard-challenge": challenge },
   });
   assert.equal(health.response.status, 200);
-  assert.equal(health.body.product, "naomi-taskboard");
+  assert.equal(health.body.product, "codex-taskboard");
   assert.equal(health.body.version, version);
   assert.equal(
     health.body.proof,

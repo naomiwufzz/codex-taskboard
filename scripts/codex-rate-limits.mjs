@@ -13,7 +13,7 @@ export async function readCodexQuotaStatus(model) {
     const session = startAppServer();
     try {
       await session.request("initialize", {
-        clientInfo: { name: "naomi-taskboard", version: "2.0.0" },
+        clientInfo: { name: "codex-taskboard", version: "2.0.0" },
       });
       session.notify("initialized", {});
       const account = await session.request("account/read", { refreshToken: false });

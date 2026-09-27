@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { main } from "../cli/naomi-taskctl.mjs";
+import { main } from "../cli/taskctl.mjs";
 import { createTaskboardServer } from "../server/index.mjs";
 
 const temporaryDirectories = [];
@@ -814,7 +814,7 @@ test("taskctl cloud status, logout, and project map use local companion endpoint
 
 test("taskctl companion-control commands use the tokenized launcher runtime endpoint", async () => {
   const calls = [];
-  const runtimeFile = "C:\\Users\\admin\\AppData\\Roaming\\Naomi Taskboard\\launcher-runtime.json";
+  const runtimeFile = "C:\\Users\\admin\\AppData\\Roaming\\Codex Taskboard\\launcher-runtime.json";
   const instanceToken = "7a6f8d37-78ce-46c9-87a8-08e10db88da2";
   const overrides = {
     env: { CODEX_TASKBOARD_RUNTIME_FILE: runtimeFile },

@@ -1,18 +1,18 @@
 ---
-name: manage-naomi-taskboard
-description: Manage Naomi Taskboard / e-taskboard work with naomi-taskctl. Use for taskboard issue IDs, status sync, comments, or naomi-taskctl cloud setup—not for unrelated product docs.
+name: manage-codex-taskboard
+description: Manage Codex Taskboard / e-taskboard work with taskctl. Use for taskboard issue IDs, status sync, comments, or taskctl cloud setup—not for unrelated product docs.
 ---
 
 # Manage Taskboard
 
-Use `naomi-taskctl` for every project, issue, relation, and comment operation. Consume its JSON output. Use the exact issue identifier returned by the taskboard or supplied in the prompt. Never assume, derive, or rewrite an identifier prefix.
+Use `taskctl` for every project, issue, relation, and comment operation. Consume its JSON output. Use the exact issue identifier returned by the taskboard or supplied in the prompt. Never assume, derive, or rewrite an identifier prefix.
 
 Open only the relevant section of [references/cli.md](references/cli.md) when command syntax is needed.
 
 ## Select the CLI and active service
 
-- Use the exact `naomi-taskctl` binary and Taskboard URL supplied by the task or injected runtime. Do not replace them with a global CLI, the default port, or another board.
-- On macOS, when no binary is injected and the desktop app is installed, check the fixed packaged wrapper at `/Applications/Naomi Taskboard.app/Contents/Resources/bin/naomi-taskctl` and use it directly. It reads the active launcher runtime; do not search the filesystem for another CLI or reconstruct the tokenized URL.
+- Use the exact `taskctl` binary and Taskboard URL supplied by the task or injected runtime. Do not replace them with a global CLI, the default port, or another board.
+- On macOS, when no binary is injected and the desktop app is installed, check the fixed packaged wrapper at `/Applications/Codex Taskboard.app/Contents/Resources/bin/taskctl` and use it directly. It reads the active launcher runtime; do not search the filesystem for another CLI or reconstruct the tokenized URL.
 - If that exact command reaches a sandbox restriction on the loopback service, retry the same command with the required permission. Do not switch binaries or endpoints.
 
 ## Terminology: local companion
@@ -35,6 +35,6 @@ When writing Chinese, keep the English word or use **本地 companion** / **本�
 
 - Preserve existing issue scope when adding requirements or acceptance details.
 - Add only relations that the work requires. Use parent for contained work, blocks or blocked_by for dependencies, and related for close association.
-- Let `naomi-taskctl` read `CODEX_THREAD_ID` for writes. Outside Codex, pass the exact conversation ID with `--thread-id`.
+- Let `taskctl` read `CODEX_THREAD_ID` for writes. Outside Codex, pass the exact conversation ID with `--thread-id`.
 - Use the latest returned `version` with `--if-version` for concurrent updates. On conflict, read the issue again and reconcile before retrying.
 - Download and inspect an inline `![alt](api/attachments/<id>/content)` image only when it is needed to understand the requirement.

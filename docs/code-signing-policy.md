@@ -7,15 +7,15 @@ continuous-integration artifacts remain unsigned until that approval.
 
 ## Scope
 
-This policy is deferred for the Naomi Taskboard source release. It will apply
-to official Windows executables and installers only after Naomi establishes a
+This policy is deferred for the Codex Taskboard source release. It will apply
+to official Windows executables and installers only after the project establishes a
 release repository, signing owner, and approval process. Development builds,
 pull-request artifacts, and local builds are not signed.
 
 ## Team roles
 
-- Release maintainer: Naomi.
-- Reviewers and approvers: to be defined before the first signed Naomi
+- Release maintainer: project maintainers.
+- Reviewers and approvers: to be defined before the first signed
   desktop release.
 
 ## Build and approval
@@ -32,7 +32,7 @@ pull-request artifacts, and local builds are not signed.
 
 ## Privacy
 
-Naomi Taskboard's data handling and network activity are documented in the
+Codex Taskboard's data handling and network activity are documented in the
 [Privacy policy](../PRIVACY.md).
 
 ## Incident response

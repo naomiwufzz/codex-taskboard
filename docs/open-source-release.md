@@ -20,14 +20,14 @@ repository, or attaching a release asset.
 ## Repository readiness
 
 - [ ] Read `README.md` from the perspective of someone who has never used
-  Naomi Taskboard.
+  Codex Taskboard.
 - [ ] Keep `README.zh-CN.md`, `CONTRIBUTING.md`, `SECURITY.md`, and
   `PRIVACY.md` in sync with the public workflow.
 - [ ] Update repository links, issue templates, release links, and ownership
   references after choosing the public repository location.
 - [ ] Preserve the existing Apache-2.0 license and the repository provenance
   when publishing a customized distribution.
-- [ ] Keep automatic updates disabled until a Naomi repository, release
+- [ ] Keep automatic updates disabled until a Codex repository, release
   endpoint, and updater signing key have been deliberately created.
 - [ ] Choose a clear repository description and a small set of accurate topics
   rather than claiming unverified capabilities.

@@ -1,20 +1,20 @@
-# Uninstall Naomi Taskboard on Windows
+# Uninstall Codex Taskboard on Windows
 
-1. Quit Naomi Taskboard from its system-tray menu.
+1. Quit Codex Taskboard from its system-tray menu.
 2. Open **Settings > Apps > Installed apps**.
-3. Find **Naomi Taskboard**, open its menu, and select **Uninstall**.
+3. Find **Codex Taskboard**, open its menu, and select **Uninstall**.
 4. Complete the NSIS uninstaller.
 
 The uninstaller removes the application files. It keeps Taskboard issues,
 attachments, settings, logs, the independent Codex profile, and the bundled
 Skill so that a later installation can reuse them.
 
-To remove that retained data, close Naomi Taskboard and delete these directories
+To remove that retained data, close Codex Taskboard and delete these directories
 for the current Windows user:
 
-- `%APPDATA%\Naomi Taskboard`
-- `%LOCALAPPDATA%\Naomi Taskboard`
-- `%USERPROFILE%\.agents\skills\manage-naomi-taskboard`
+- `%APPDATA%\Codex Taskboard`
+- `%LOCALAPPDATA%\Codex Taskboard`
+- `%USERPROFILE%\.agents\skills\manage-codex-taskboard`
 
 Removing the first directory permanently deletes local Taskboard issues and
 attachments. It does not remove the official Codex application, the user's

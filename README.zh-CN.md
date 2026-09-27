@@ -1,6 +1,6 @@
 [English](README.md)
 
-# Naomi Taskboard
+# Codex Taskboard
 
 > **让对话变成推进力。**
 >
@@ -86,7 +86,7 @@ Session Outcome Graph 用于回答这些问题：
 
 ### CLI 与 Codex Skill
 
-同一套 Taskboard API 也可以通过 `naomi-taskctl` 使用。随附的 `manage-naomi-taskboard` Skill 为 Codex 提供一套更稳妥的操作边界：认领、执行、验证、进入待确认，以及在用户明确接受后完成。
+同一套 Taskboard API 也可以通过 `taskctl` 使用。随附的 `manage-codex-taskboard` Skill 为 Codex 提供一套更稳妥的操作边界：认领、执行、验证、进入待确认，以及在用户明确接受后完成。
 
 ### 可选的协作部署
 
@@ -134,8 +134,8 @@ npm run dev
 如果希望 Codex 按照更稳定的任务边界操作 Taskboard，可以安装随附 Skill：
 
 ```bash
-ln -s /absolute/path/to/naomi-taskboard/skills/manage-naomi-taskboard \
-  ~/.codex/skills/manage-naomi-taskboard
+ln -s /absolute/path/to/codex-taskboard/skills/manage-codex-taskboard \
+  ~/.codex/skills/manage-codex-taskboard
 ```
 
 安装后启动新的 Codex task。Skill 推动的是下面这条流程：
@@ -146,12 +146,12 @@ ln -s /absolute/path/to/naomi-taskboard/skills/manage-naomi-taskboard \
 
 它不会把“有人负责”自动当成“已经获准开始”，也不会在没有明确接受信号时擅自把议题标记为完成。
 
-## 使用 `naomi-taskctl`
+## 使用 `taskctl`
 
 创建项目：
 
 ```bash
-npm run naomi-taskctl -- project create \
+npm run taskctl -- project create \
   --id my-project \
   --name "My project" \
   --workspace-path /absolute/path/to/repository
@@ -160,7 +160,7 @@ npm run naomi-taskctl -- project create \
 创建议题：
 
 ```bash
-npm run naomi-taskctl -- issue create \
+npm run taskctl -- issue create \
   --project my-project \
   --title "Implement the next slice" \
   --status todo \
@@ -168,7 +168,7 @@ npm run naomi-taskctl -- issue create \
   --labels product,mvp
 ```
 
-如果使用 `npm link` 安装 CLI，可以直接在 shell 中使用 `naomi-taskctl`。如果要让 CLI 指向其他本机或受信任局域网服务，可以设置 `CODEX_TASKBOARD_URL`。
+如果使用 `npm link` 安装 CLI，可以直接在 shell 中使用 `taskctl`。如果要让 CLI 指向其他本机或受信任局域网服务，可以设置 `CODEX_TASKBOARD_URL`。
 
 ## 连接 Codex
 
@@ -273,7 +273,7 @@ dist/
 | `CODEX_TASKBOARD_HOST` | 服务绑定地址。本机使用 `127.0.0.1`。 |
 | `CODEX_TASKBOARD_PORT` | 本地服务端口。 |
 | `CODEX_TASKBOARD_DATA_DIR` | 本地看板数据位置。 |
-| `CODEX_TASKBOARD_URL` | `naomi-taskctl` 使用的 API 地址。 |
+| `CODEX_TASKBOARD_URL` | `taskctl` 使用的 API 地址。 |
 
 仅本机访问：
 
@@ -322,8 +322,8 @@ npm start
 | --- | --- |
 | `web/` | 看板、仪表盘、列表、会话池和结果血缘 |
 | `server/` | 本地 HTTP API 与集成 |
-| `cli/` | `naomi-taskctl` 命令行工具 |
-| `skills/manage-naomi-taskboard/` | Codex 操作边界 |
+| `cli/` | `taskctl` 命令行工具 |
+| `skills/manage-codex-taskboard/` | Codex 操作边界 |
 | `scripts/` | 启动器、注入器、打包与验证 |
 | `cloud/` | 可选共享部署 |
 | `docs/` | 运维与部署文档 |

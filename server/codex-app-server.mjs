@@ -124,8 +124,8 @@ export class CodexAppServer {
       child.once("spawn", () => {
         this.#sendRequest("initialize", {
           clientInfo: {
-            name: "naomi-taskboard",
-            title: "Naomi Taskboard",
+            name: "codex-taskboard",
+            title: "Codex Taskboard",
             version: "2.0.0",
           },
           capabilities: {

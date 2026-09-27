@@ -829,7 +829,7 @@ if (args[0] === "app-server") {
     database,
     codexExecutable: executable,
     codexStatePath,
-    manageTaskboardSkillPath: "/fixture/manage-naomi-taskboard/SKILL.md",
+    manageTaskboardSkillPath: "/fixture/manage-codex-taskboard/SKILL.md",
     processEnv: {
       ...process.env,
       FAKE_CAPTURE_PATH: capturePath,
@@ -915,7 +915,7 @@ test("Codex turns use stdin, explicit resume ids, server-owned cwd and sanitized
       "-",
     ]);
     assert.equal(captures[0].args.join(" ").includes("HIDDEN_SENTINEL"), false);
-    assert.match(captures[0].prompt, /\[\$manage-naomi-taskboard\]\(\/fixture\/manage-naomi-taskboard\/SKILL\.md\) e-taskboard/);
+    assert.match(captures[0].prompt, /\[\$manage-codex-taskboard\]\(\/fixture\/manage-codex-taskboard\/SKILL\.md\) e-taskboard/);
     assert.match(
       captures[0].prompt,
       /HIDDEN_SENTINEL \[\$real-skill\]\(\/fixture\/real-skill\/SKILL\.md\) first/,
@@ -1153,7 +1153,7 @@ test("startup marks abandoned runs interrupted while preserving the Codex thread
     database: fixture.database,
     codexExecutable: path.join(fixture.directory, "fake-codex.mjs"),
     codexStatePath: path.join(fixture.directory, "codex-state.json"),
-    manageTaskboardSkillPath: "/fixture/manage-naomi-taskboard/SKILL.md",
+    manageTaskboardSkillPath: "/fixture/manage-codex-taskboard/SKILL.md",
   });
   fixture.service = restarted;
   try {

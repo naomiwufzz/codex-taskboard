@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import test from "node:test";
 
-import { main, parseArgs } from "../cli/naomi-taskctl.mjs";
+import { main, parseArgs } from "../cli/taskctl.mjs";
 
 function capture() {
   let value = "";
@@ -304,7 +304,7 @@ test("issue move fetches the current version when --if-version is omitted", asyn
 
 test("issue move separates controller attribution from the task thread binding", async () => {
   let requestBody;
-  const windowsWorkspacePath = String.raw`C:\Users\admin\Documents\naomi-taskboard`;
+  const windowsWorkspacePath = String.raw`C:\Users\admin\Documents\codex-taskboard`;
   const result = await run([
     "issue", "move", "TASK-1", "--status", "blocked", "--if-version", "3",
     "--binding-thread-id", "remote-thread",

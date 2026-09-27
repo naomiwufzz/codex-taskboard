@@ -1,6 +1,6 @@
 # Cloud collaboration
 
-Naomi Taskboard can run as a small shared Cloudflare deployment for two trusted collaborators:
+Codex Taskboard can run as a small shared Cloudflare deployment for two trusted collaborators:
 
 - one Worker serves the built UI and the JSON API;
 - D1 is the authoritative business database;
@@ -12,9 +12,9 @@ The production resource names are:
 
 | Resource | Name |
 | --- | --- |
-| Worker | `naomi-taskboard` |
-| D1 database | `naomi-taskboard-db` |
-| R2 bucket | `naomi-taskboard-attachments` |
+| Worker | `codex-taskboard` |
+| D1 database | `codex-taskboard-db` |
+| R2 bucket | `codex-taskboard-attachments` |
 
 This is intentionally a shared-password trust model. The Basic username is only the actor name displayed in task and comment attribution, not a verified identity. Anyone who knows the shared password has full read and write access and can choose any actor name. Use it only with the other trusted collaborator.
 
@@ -24,7 +24,7 @@ The cloud stores project, issue, comment, relation, workflow, and attachment dat
 
 Each collaborator runs the **local companion**: a **device-local loopback service** (not a chat persona) for Codex, Git/worktree scanning, installed Skill/MCP discovery, and project path mapping. The companion keeps the cloud URL, actor name, shared password, and device-specific project mappings in `.data/cloud-companion.json` with mode `0600`. Ordinary Taskboard HTTP routes (tasks, comments, attachments) are the shared API; they are not a separate “companion API”.
 
-When cloud mode is active, the cloud is the only business-data source. A failed cloud request fails visibly. The companion does not fall back to the local SQLite database and does not write to both databases. `naomi-taskctl cloud logout` returns that device to its separate local mode; it does not merge local and cloud data.
+When cloud mode is active, the cloud is the only business-data source. A failed cloud request fails visibly. The companion does not fall back to the local SQLite database and does not write to both databases. `taskctl cloud logout` returns that device to its separate local mode; it does not merge local and cloud data.
 
 ## Owner: validate locally
 
@@ -58,8 +58,8 @@ npx wrangler whoami
 Provision the production D1 database and private R2 bucket using the exact names above.
 
 ```bash
-npx wrangler d1 create naomi-taskboard-db
-npx wrangler r2 bucket create naomi-taskboard-attachments
+npx wrangler d1 create codex-taskboard-db
+npx wrangler r2 bucket create codex-taskboard-attachments
 ```
 
 `wrangler.jsonc` contains one production configuration and identifies the D1 binding by its resource name and `database_id`. A D1 database ID is public metadata and does not grant access, so it can be committed. Wrangler local development creates persistent local equivalents under `.wrangler/`; those are local simulations, not additional Cloudflare environments.
@@ -108,12 +108,12 @@ CODEX_TASKBOARD_HOST=127.0.0.1 npm start
 In a second terminal, configure cloud mode. Use the deployed HTTPS Worker origin, choose the actor name that should appear on their actions, and enter the shared password only at the private `Shared key:` prompt:
 
 ```bash
-npm run naomi-taskctl -- cloud login \
+npm run taskctl -- cloud login \
   --url https://YOUR-WORKER-ORIGIN \
   --actor-name "FRIEND-DISPLAY-NAME"
 
-npm run naomi-taskctl -- cloud status
-npm run naomi-taskctl -- project list
+npm run taskctl -- cloud status
+npm run taskctl -- project list
 ```
 
 The shared password is not part of the command and is not echoed by the prompt.
@@ -121,7 +121,7 @@ The shared password is not part of the command and is not echoed by the prompt.
 For every cloud project used with Codex, map its project ID to that friend's own absolute checkout path:
 
 ```bash
-npm run naomi-taskctl -- project map PROJECT_ID \
+npm run taskctl -- project map PROJECT_ID \
   --workspace-path /absolute/path/on/their/device
 ```
 
@@ -135,7 +135,7 @@ CODEX_TASKBOARD_HOST=127.0.0.1 npm run codex
 
 `npm run codex` reuses or starts the loopback companion. Keep it running while using the embedded board. The companion supplies local Codex/Git/Skill/MCP capabilities and sends the shared password to the Worker only in the HTTPS Basic `Authorization` header. It does not write that password to D1 or R2, return it to the browser UI, or print it in logs. Device paths also stay off Cloudflare.
 
-Do not point `CODEX_TASKBOARD_URL` directly at the cloud origin for this workflow. `naomi-taskctl` talks to the loopback companion, which applies Basic Authentication and the device's local project mapping. If the companion uses a non-default loopback port, set `CODEX_TASKBOARD_COMPANION_URL` to that loopback origin.
+Do not point `CODEX_TASKBOARD_URL` directly at the cloud origin for this workflow. `taskctl` talks to the loopback companion, which applies Basic Authentication and the device's local project mapping. If the companion uses a non-default loopback port, set `CODEX_TASKBOARD_COMPANION_URL` to that loopback origin.
 
 ## Browser-only access
 
@@ -154,7 +154,7 @@ The owner rotates the Worker secret using Wrangler's interactive prompt:
 npx wrangler secret put TASKBOARD_SHARED_SECRET
 ```
 
-After rotation, both devices rerun `naomi-taskctl cloud login` and enter the new password. Browser-only users must authenticate again; closing the authenticated browser session or clearing site authentication may be necessary because browsers cache Basic credentials.
+After rotation, both devices rerun `taskctl cloud login` and enter the new password. Browser-only users must authenticate again; closing the authenticated browser session or clearing site authentication may be necessary because browsers cache Basic credentials.
 
 Because both collaborators share one password, rotation affects both at once. There is no individual-user revocation in this two-person trust model.
 
